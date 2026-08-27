@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ScanStatus {
+  QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum Severity {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+  INFO
+}
+
+enum FindingCategory {
+  SECURITY
+  CONFIGURATION
+  DEPENDENCIES
+  BUILD
+  PERFORMANCE
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String?
+  email        String    @unique
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  projects     Project[]
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  ownerId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  scans       Scan[]
+
+  @@index([ownerId])
+}
+
+model Scan {
+  id             String     @id @default(cuid())
+  projectId      String
+  status         ScanStatus @default(QUEUED)
+  score          Int?
+  criticalCount  Int        @default(0)
+  highCount      Int        @default(0)
+  mediumCount    Int        @default(0)
+  lowCount       Int        @default(0)
+  infoCount      Int        @default(0)
+  categoryScores Json?
+  errorMessage   String?
+  createdAt      DateTime   @default(now())
+  completedAt    DateTime?
+  project        Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  findings      Finding[]
+
+  @@index([projectId, createdAt])
+}
+
+model Finding {
+  id             String          @id @default(cuid())
+  scanId         String
+  ruleId         String
+  severity       Severity
+  category       FindingCategory
+  title          String
+  description    String
+  file           String?
+  line           Int?
+  evidence       String?
+  recommendation String
+  createdAt      DateTime        @default(now())
+  scan           Scan            @relation(fields: [scanId], references: [id], onDelete: Cascade)
+
+  @@index([scanId, severity])
+}

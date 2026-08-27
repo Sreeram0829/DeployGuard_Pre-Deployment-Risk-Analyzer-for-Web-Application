@@ -1,0 +1,5 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getProject } from "@/actions/project.actions";
+import { UploadZone } from "@/components/scanner/upload-zone";
+export default async function ProjectPage({ params }: { params: Promise<{projectId:string}> }) { const {projectId}=await params; const project=await getProject(projectId); if(!project) notFound(); return <div className="space-y-8"><div><Link href="/projects" className="text-sm text-slate-500">← Projects</Link><div className="mt-3 flex flex-col justify-between gap-4 sm:flex-row"><div><h1 className="text-3xl font-bold">{project.name}</h1><p className="mt-2 text-sm text-slate-500">{project.description || "No description provided."}</p></div><Link href={`/projects/${project.id}/scans`} className="self-start rounded-md border bg-white px-4 py-2.5 text-sm font-semibold">View scans</Link></div></div><UploadZone projectId={project.id}/><div className="rounded-xl border bg-white p-6"><h2 className="font-semibold">Project overview</h2><p className="mt-2 text-sm text-slate-500">Latest score and findings will appear here after the first scan.</p></div></div>; }

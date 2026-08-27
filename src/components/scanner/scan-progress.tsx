@@ -1,0 +1,1 @@
+export function ScanProgress({label="Analyzing project…"}:{label?:string}){return <div className="rounded-xl border bg-white p-6"><p className="text-sm font-medium">{label}</p><div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full w-2/3 animate-pulse rounded-full bg-slate-800"/></div></div>}

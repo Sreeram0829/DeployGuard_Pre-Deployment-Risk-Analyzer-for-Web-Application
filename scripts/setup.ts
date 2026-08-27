@@ -1,0 +1,1 @@
+import {execSync} from "node:child_process"; console.log("DeployGuard setup: generating Prisma Client and pushing the local schema.");execSync("npx prisma generate",{stdio:"inherit"});execSync("npx prisma db push",{stdio:"inherit"});console.log("Setup complete. Run npm run dev.");

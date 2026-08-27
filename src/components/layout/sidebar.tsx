@@ -1,0 +1,3 @@
+import Link from "next/link"; import { BarChart3, FolderKanban, ScanLine, Settings } from "lucide-react";
+const links=[["/dashboard","Dashboard",BarChart3],["/projects","Projects",FolderKanban],["/scans","Scans",ScanLine],["/settings","Settings",Settings]] as const;
+export function Sidebar(){return <aside className="hidden w-52 shrink-0 py-8 lg:block"><nav className="space-y-1">{links.map(([href,label,Icon])=><Link key={href} href={href} className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-white hover:text-slate-950"><Icon className="h-4 w-4"/>{label}</Link>)}</nav></aside>}

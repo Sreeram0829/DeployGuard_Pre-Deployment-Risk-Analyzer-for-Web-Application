@@ -1,0 +1,3 @@
+import {describe,it,expect} from "vitest"; import {calculateScore} from "@/scanner/scoring/score-calculator"; import type {Finding} from "@/types/finding";
+const f=(severity:Finding["severity"],category:Finding["category"]="SECURITY"):Finding=>({ruleId:"T",severity,category,title:"t",description:"d",recommendation:"r"});
+describe("scoring",()=>{it("starts at 100",()=>expect(calculateScore([]).score).toBe(100));it("deducts centralized severity weights",()=>expect(calculateScore([f("HIGH"),f("MEDIUM")]).score).toBe(82));it("never goes below zero",()=>expect(calculateScore(Array.from({length:10},()=>f("CRITICAL"))).score).toBe(0));});

@@ -1,0 +1,3 @@
+import {z} from "zod";
+const schema=z.object({DATABASE_URL:z.string().min(1),NEXTAUTH_SECRET:z.string().min(1),NEXTAUTH_URL:z.string().url(),MAX_UPLOAD_SIZE_MB:z.coerce.number().positive().default(50),MAX_EXTRACTED_FILES:z.coerce.number().int().positive().default(5000),MAX_FILE_SIZE_MB:z.coerce.number().positive().default(10)});
+export const env=schema.parse({DATABASE_URL:process.env.DATABASE_URL,NEXTAUTH_SECRET:process.env.NEXTAUTH_SECRET,NEXTAUTH_URL:process.env.NEXTAUTH_URL||"http://localhost:3000",MAX_UPLOAD_SIZE_MB:process.env.MAX_UPLOAD_SIZE_MB,MAX_EXTRACTED_FILES:process.env.MAX_EXTRACTED_FILES,MAX_FILE_SIZE_MB:process.env.MAX_FILE_SIZE_MB});

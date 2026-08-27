@@ -1,0 +1,3 @@
+import fg from "fast-glob"; import path from "node:path"; import {stat} from "node:fs/promises"; import type {ScannedFile} from "../types";
+const ignored=["node_modules/**",".git/**",".next/**","dist/**","build/**","coverage/**"];
+export async function findFiles(root:string):Promise<ScannedFile[]>{const paths=await fg(["**/*"],{cwd:root,absolute:true,dot:true,onlyFiles:true,ignore:ignored});const files:ScannedFile[]=[];for(const absolutePath of paths){const s=await stat(absolutePath);files.push({absolutePath,relativePath:path.relative(root,absolutePath).replace(/\\/g,"/"),size:s.size});}return files;}

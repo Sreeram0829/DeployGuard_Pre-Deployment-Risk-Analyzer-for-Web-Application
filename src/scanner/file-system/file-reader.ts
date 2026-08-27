@@ -1,0 +1,2 @@
+import fs from "node:fs/promises"; import path from "node:path"; import {MAX_SCAN_FILE_BYTES} from "@/lib/constants"; import type {ScannedFile} from "../types";
+export async function readTextFiles(files:ScannedFile[]){for(const file of files){if(file.size>MAX_SCAN_FILE_BYTES)continue;const ext=path.extname(file.relativePath).toLowerCase();if([".png",".jpg",".jpeg",".gif",".webp",".ico",".woff",".woff2",".ttf",".zip",".pdf",".mp4",".mov"].includes(ext))continue;try{file.content=await fs.readFile(file.absolutePath,"utf8")}catch{}}return files;}

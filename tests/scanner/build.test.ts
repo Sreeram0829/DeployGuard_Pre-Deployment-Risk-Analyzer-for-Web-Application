@@ -1,0 +1,2 @@
+import {describe,it,expect} from "vitest"; import {buildScriptCheck} from "@/scanner/rules/build/build-script-check"; import {nodeVersionCheck} from "@/scanner/rules/build/node-version-check";
+describe("build rules",()=>{it("requires build script",()=>expect(buildScriptCheck({rootDir:"/tmp",files:[],packageJson:{scripts:{}}})[0].ruleId).toBe("BLD-001"));it("flags missing node version",()=>expect(nodeVersionCheck({rootDir:"/tmp",files:[],packageJson:{scripts:{build:"next build"}}})[0].ruleId).toBe("BLD-003"));});
